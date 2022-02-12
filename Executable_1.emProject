@@ -20,13 +20,14 @@
       arm_target_device_name="STM32F103ZE"
       arm_target_interface_type="SWD"
       c_preprocessor_definitions="STM32F103xE;__STM32F1xx_FAMILY;__STM32F103_SUBFAMILY;ARM_MATH_CM3"
-      c_user_include_directories="$(ProjectDir)/stm32cubemax/Drivers/CMSIS/Core/Include;$(ProjectDir)/stm32cubemax/Drivers/CMSIS/Device/ST/STM32F1xx/Include;$(ProjectDir)/stm32cubemax/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;$(ProjectDir)/stm32cubemax/Drivers/STM32F1xx_HAL_Driver/Inc;$(ProjectDir)/STM32F1xx/Library/FreeRTOSv202112.00/FreeRTOS/Source/portable/GCC/ARM_CM3;$(ProjectDir)/STM32F1xx/Library/FreeRTOSv202112.00/FreeRTOS/Source/include;$(ProjectDir)/STM32F1xx/Src/boot;$(ProjectDir)/STM32F1xx/Library/FreeRTOSv202112.00/FreeRTOS/Source/include;$(ProjectDir)/STM32F1xx/Src/drive"
+      c_user_include_directories="$(ProjectDir)/stm32cubemax/Drivers/CMSIS/Core/Include;$(ProjectDir)/stm32cubemax/Drivers/CMSIS/Device/ST/STM32F1xx/Include;$(ProjectDir)/stm32cubemax/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;$(ProjectDir)/stm32cubemax/Drivers/STM32F1xx_HAL_Driver/Inc;$(ProjectDir)/STM32F1xx/Library/FreeRTOSv202112.00/FreeRTOS/Source/portable/GCC/ARM_CM3;$(ProjectDir)/STM32F1xx/Library/FreeRTOSv202112.00/FreeRTOS/Source/include;$(ProjectDir)/STM32F1xx/Src/boot;$(ProjectDir)/STM32F1xx/Library/FreeRTOSv202112.00/FreeRTOS/Source/include;$(ProjectDir)/STM32F1xx/Src/drive;$(ProjectDir)/STM32F1xx/Library/lwrb/lwrb/src/include"
       debug_register_definition_file="$(ProjectDir)/STM32F103xx_Registers.xml"
       debug_stack_pointer_start="__stack_end__"
       debug_target_connection="J-Link"
       gcc_entry_point="Reset_Handler"
       link_linker_script_file="$(ProjectDir)/STM32F1xx_Flash.icf"
       linker_memory_map_file="$(ProjectDir)/STM32F103ZE_MemoryMap.xml"
+      linker_output_format="bin"
       linker_printf_fp_enabled="Float"
       macros="DeviceHeaderFile=$(PackagesDir)/STM32F1xx/CMSIS/Device/Include/stm32f10x.h;DeviceLibraryIdentifier=M3l;DeviceSystemFile=$(PackagesDir)/STM32F1xx/CMSIS/Device/Source/system_stm32f10x.c;DeviceVectorsFile=$(PackagesDir)/STM32F1xx/Source/STM32F103xx_Vectors.s;DeviceFamily=STM32F1xx;DeviceSubFamily=STM32F103;Target=STM32F103ZE"
       project_directory=""
@@ -50,9 +51,12 @@
         <file file_name="STM32F1xx/Src/boot/system_stm32f1xx.c" />
         <file file_name="STM32F1xx/Src/boot/main.c" />
         <file file_name="STM32F1xx/Src/boot/boot.c" />
+        <file file_name="STM32F1xx/Src/boot/app_jump.c" />
       </folder>
       <folder Name="driver">
         <file file_name="STM32F1xx/Src/drive/system.c" />
+        <file file_name="STM32F1xx/Src/drive/bsp_uart1.c" />
+        <file file_name="STM32F1xx/Src/drive/bsp_uarts.c" />
       </folder>
     </folder>
     <folder Name="System Files">
@@ -125,10 +129,14 @@
         <file file_name="stm32cubemax/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c" />
         <file file_name="stm32cubemax/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_wwdg.c" />
       </folder>
+      <folder Name="lwrb">
+        <file file_name="STM32F1xx/Library/lwrb/lwrb/src/lwrb/lwrb.c" />
+      </folder>
     </folder>
     <configuration
       Name="Debug"
-      debug_register_definition_file="STM32F103xx_Registers.xml" />
+      debug_register_definition_file="STM32F103xx_Registers.xml"
+      linker_output_format="bin" />
     <folder Name="CMSIS">
       <folder Name="CORE">
         <file file_name="stm32cubemax/Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h" />

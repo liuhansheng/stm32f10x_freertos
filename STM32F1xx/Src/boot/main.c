@@ -1,5 +1,8 @@
 #include "main.h"
 #include "system.h"
+#include "bsp_uart1.h"
+#include "app_info.h"
+#include "app_jump.h"
 #define OUTPUT_TYPE_PP 0
 #define OUTPUT_TYPE_OD 1
 typedef enum
@@ -72,51 +75,102 @@ void LED_Init(void)
 void vTaskLED1(void * pvParameters)
 { 
   LED_Init();
-  portTickType xLastWakeTime; 
-
-  xLastWakeTime = xTaskGetTickCount(); 
   while(1)
   {
     bsp_write_do_toggle(DO_LED_RED);
     printf("hello world %d !\r\n",xTaskGetTickCount());
-    vTaskDelayUntil( &xLastWakeTime, ( 1000 / portTICK_RATE_MS ) ); 
+    vTaskDelay( ( 1000 / portTICK_RATE_MS ) ); 
   }
 } 
 
 void vTaskLED2(void * pvParameters)
 { 
-  LED_Init();
-  portTickType xLastWakeTime; 
-
-  xLastWakeTime = xTaskGetTickCount(); 
+  LED_Init(); 
   while(1)
   {
     bsp_write_do_toggle(DO_LED_BLUE);
     printf("hello world %d !\r\n",xTaskGetTickCount());
-    vTaskDelayUntil( &xLastWakeTime, ( 1000 / portTICK_RATE_MS ) ); 
+    vTaskDelay(( 1000 / portTICK_RATE_MS )); 
   }
 } 
 
 void vTaskLED3(void * pvParameters)
 { 
   LED_Init();
-  portTickType xLastWakeTime; 
-
-  xLastWakeTime = xTaskGetTickCount(); 
   while(1)
   {
     bsp_write_do_toggle(DO_LED_GREEN);
     printf("hello world %d !\r\n",xTaskGetTickCount());
-    vTaskDelayUntil( &xLastWakeTime, ( 1000 / portTICK_RATE_MS ) ); 
+    vTaskDelay( 1000 / portTICK_RATE_MS); 
   }
-} 
-
-int main( void ) 
-{ 
-    sys_init();
+}
+void test_led(void)
+{
     xTaskCreate(vTaskLED1, "LED1", 500, NULL, 0, NULL);
     xTaskCreate(vTaskLED2, "LED2", 500, NULL, 0, NULL);
-    xTaskCreate(vTaskLED3, "LED3", 500, NULL, 0, NULL);
+    xTaskCreate(vTaskLED3, "LED3", 500, NULL, 0, NULL); 
+}
+void uart1_read(const uint8_t data)
+{
+    printf("%c",data);
+    static uint8_t status = 0;
+    if( 4 == status )
+    {
+        app_jump_to_boot(MAGIC_NUM_UART_BOOT);
+        return;
+    }
+    switch (status)
+    {
+    case 0:
+        if(data == 'b')
+        {
+            status ++;
+        }
+        else
+        {
+            status = 0;
+        }
+         break;
+    case 1:
+        if(data == 'o')
+        {
+            status ++;
+        }
+        else
+        {
+            status = 0;
+        }
+        break;
+    case 2:
+        if(data == 'o')
+        {
+            status ++;
+        }
+        else
+        {
+            status = 0;
+        }
+        break;
+    case 3:
+        if(data == 't')
+        {
+            status ++;
+        }
+        else
+        {
+            status = 0;
+        }
+        break;
+    default:
+        break;
+    }
+}
+int main( void ) 
+{
+    sys_init();
+    test_led();
+    bsp_uart1_init(115200);
+    bsp_uart1_install_rx_callback(uart1_read);
     vTaskStartScheduler(); 
     while(1);
 }
