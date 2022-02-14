@@ -153,21 +153,13 @@ static void vTaskUART(void * pvParameters)
 {
     (void)pvParameters;
 
-    /* 创建信号量, 初始值是 0 */
-    // uart1_rx_sem = xSemaphoreCreateBinary(); 
     while (1)
     {
-        /* 永久方式等待信号量 */
-        // const uint8_t result = xSemaphoreTake(uart1_rx_sem, portMAX_DELAY);
         if(!sem_flag == 1)
         {   
             vTaskDelay( 50 / portTICK_RATE_MS);
             continue ;
         }
-        // if (result == pdTRUE)
-        // {
-        //     usart_rx_check();
-        // }
         usart_rx_check();
         sem_flag = 0;
         HAL_UART_Receive_DMA(&huart1, uart1_rx_dma_buffer, sizeof(uart1_rx_dma_buffer));

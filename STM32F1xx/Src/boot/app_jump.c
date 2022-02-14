@@ -16,7 +16,7 @@ void app_jump_to_boot(uint32_t magic_num)
 
     HAL_DeInit();
     HAL_RCC_DeInit();
-
+    
     // 关闭所有中断
     for (int i = NonMaskableInt_IRQn; i <= DMA2_Channel4_5_IRQn; i++)
     {
@@ -45,7 +45,7 @@ void app_jump_to_boot(uint32_t magic_num)
         JumpAddress         = *(__IO uint32_t *)(BOOT_ADDRESS + 4);
         Jump_To_Application = (pFunction)JumpAddress;
         /* Initialize user application's Stack Pointer */
-        SCB->VTOR = BOOT_ADDRESS;
+        // SCB->VTOR = BOOT_ADDRESS;
         HAL_NVIC_SystemReset();
         // Jump_To_Application();
     }

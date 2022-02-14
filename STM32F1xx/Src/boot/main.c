@@ -78,7 +78,7 @@ void vTaskLED1(void * pvParameters)
   while(1)
   {
     bsp_write_do_toggle(DO_LED_RED);
-    printf("hello world %d !\r\n",xTaskGetTickCount());
+    //printf("hello world %d !\r\n",xTaskGetTickCount());
     vTaskDelay( ( 1000 / portTICK_RATE_MS ) ); 
   }
 } 
@@ -89,7 +89,7 @@ void vTaskLED2(void * pvParameters)
   while(1)
   {
     bsp_write_do_toggle(DO_LED_BLUE);
-    printf("hello world %d !\r\n",xTaskGetTickCount());
+    //printf("hello world %d !\r\n",xTaskGetTickCount());
     vTaskDelay(( 1000 / portTICK_RATE_MS )); 
   }
 } 
@@ -100,10 +100,17 @@ void vTaskLED3(void * pvParameters)
   while(1)
   {
     bsp_write_do_toggle(DO_LED_GREEN);
-    printf("hello world %d !\r\n",xTaskGetTickCount());
+    //printf("hello world %d !\r\n",xTaskGetTickCount());
     vTaskDelay( 1000 / portTICK_RATE_MS); 
+    //static int8_t cont = 0;
+    //cont++;
+    //if(cont > 10)
+    //{
+    //    cont = 0;
+    //    app_jump_to_boot(MAGIC_NUM_UART_BOOT);
+    //}
   }
-}
+} 
 void test_led(void)
 {
     xTaskCreate(vTaskLED1, "LED1", 500, NULL, 0, NULL);
@@ -112,11 +119,13 @@ void test_led(void)
 }
 void uart1_read(const uint8_t data)
 {
-    printf("%c",data);
     static uint8_t status = 0;
     if( 4 == status )
     {
-        app_jump_to_boot(MAGIC_NUM_UART_BOOT);
+        return;
+    }
+    if(data < 0)
+    {
         return;
     }
     switch (status)
@@ -124,7 +133,7 @@ void uart1_read(const uint8_t data)
     case 0:
         if(data == 'b')
         {
-            status ++;
+            status  = 1;
         }
         else
         {
@@ -134,7 +143,7 @@ void uart1_read(const uint8_t data)
     case 1:
         if(data == 'o')
         {
-            status ++;
+            status = 2;
         }
         else
         {
@@ -144,7 +153,7 @@ void uart1_read(const uint8_t data)
     case 2:
         if(data == 'o')
         {
-            status ++;
+            status = 3 ;
         }
         else
         {
@@ -154,7 +163,7 @@ void uart1_read(const uint8_t data)
     case 3:
         if(data == 't')
         {
-            status ++;
+            status = 4;
         }
         else
         {
@@ -163,6 +172,14 @@ void uart1_read(const uint8_t data)
         break;
     default:
         break;
+    }
+    if(4 == status)
+    {
+      //uint8_t data[2] = {0x12,0x10}; 
+      //bsp_uart1_send(data,2);
+      HAL_Delay(1000);
+      app_jump_to_boot(MAGIC_NUM_UART_BOOT);
+      return ;
     }
 }
 int main( void ) 
@@ -173,6 +190,6 @@ int main( void )
     bsp_uart1_install_rx_callback(uart1_read);
     vTaskStartScheduler(); 
     while(1);
-}
+}   
 
 /*************************** End of file ****************************/
