@@ -1,4 +1,5 @@
 Output/
+!Output/**/*.py
 stm32cubemax/
 !stm32cubemax/*.ioc
 .vscode
