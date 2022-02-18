@@ -45,7 +45,7 @@ define memory with size = 4G;
 //
 // Combined regions per memory type
 //
-define region FLASH = FLASH2;
+define region FLASH = FLASH2 + FLASH1;
 define region RAM   = RAM1;
 
 //

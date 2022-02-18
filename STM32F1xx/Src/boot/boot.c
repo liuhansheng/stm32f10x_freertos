@@ -118,6 +118,7 @@ void vAssertCalled( void )
         while( looping == 0LU )
         {
             portNOP();
+            printf("__FILE__ : STR(__LINE__) %s,%d \n", __FILE__,__LINE__);
         }
     }
     taskEXIT_CRITICAL();

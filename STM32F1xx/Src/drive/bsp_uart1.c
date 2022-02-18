@@ -155,7 +155,7 @@ static void vTaskUART(void * pvParameters)
 
     while (1)
     {
-        if(!sem_flag == 1)
+        if(pdTRUE == xSemaphoreTake(uart1_rx_sem,portMAX_DELAY))
         {   
             vTaskDelay( 50 / portTICK_RATE_MS);
             continue ;
@@ -190,18 +190,15 @@ void bsp_uart1_dma_tx_cplt_cb(void)
 
 void bsp_uart1_dma_rx_halt_cb(void)
 {
-    sem_flag = 1;
-    // xSemaphoreGive(uart1_rx_sem);
+    xSemaphoreGive(uart1_rx_sem);
 }
 
 void bsp_uart1_dma_rx_cplt_cb(void)
 {
-    sem_flag = 1;
-    // xSemaphoreGive(uart1_rx_sem);
+    xSemaphoreGive(uart1_rx_sem);
 }
 
 void bsp_uart1_rx_idle_cb(void)
 {
-    sem_flag = 1;
-    // xSemaphoreGive(uart1_rx_sem);
+    xSemaphoreGive(uart1_rx_sem);
 }

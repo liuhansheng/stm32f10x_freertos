@@ -47,11 +47,11 @@ extern void vAssertCalled( void );
 #define configASSERT( x )    if( ( x ) == 0 ) vAssertCalled()
 #define configQUEUE_REGISTRY_SIZE                        20
 
-#define configUSE_PREEMPTION                             1
+#define configUSE_PREEMPTION                             1 /**抢占调度 */
 #define configUSE_TIME_SLICING                           0
-#define configUSE_PORT_OPTIMISED_TASK_SELECTION          0
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION          0 /**通用方法 */
 
-#define configUSE_IDLE_HOOK                              1
+#define configUSE_IDLE_HOOK                              1 /** 开启空闲钩子函数 */
 #define configUSE_TICK_HOOK                              1
 #define configUSE_DAEMON_TASK_STARTUP_HOOK               0
 #define configCPU_CLOCK_HZ                               ( ( unsigned long ) 72000000 )

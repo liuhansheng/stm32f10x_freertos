@@ -102,13 +102,6 @@ void vTaskLED3(void * pvParameters)
     bsp_write_do_toggle(DO_LED_GREEN);
     //printf("hello world %d !\r\n",xTaskGetTickCount());
     vTaskDelay( 1000 / portTICK_RATE_MS); 
-    //static int8_t cont = 0;
-    //cont++;
-    //if(cont > 10)
-    //{
-    //    cont = 0;
-    //    app_jump_to_boot(MAGIC_NUM_UART_BOOT);
-    //}
   }
 } 
 void test_led(void)
@@ -191,5 +184,8 @@ int main( void )
     vTaskStartScheduler(); 
     while(1);
 }   
+
+
+
 
 /*************************** End of file ****************************/
